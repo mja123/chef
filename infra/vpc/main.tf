@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "terraform-state-mja123"
-    key            = "ec2-terraform.tfstate"
+    key            = "vpc-terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "lock-state"
     encrypt        = true
@@ -12,14 +12,6 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "> 5.0"
-    }
-    local = {
-      source  = "hashicorp/local"
-      version = "> 2.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "> 4.0"
     }
   }
   required_version = "1.7.4"

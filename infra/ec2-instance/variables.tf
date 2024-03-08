@@ -3,3 +3,8 @@ variable "public_key" {
   type        = string
   sensitive   = true
 }
+
+variable "private_key_path" {
+  description = "Path to store private key"
+  type        = string
+}
