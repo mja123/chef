@@ -13,7 +13,7 @@ data "aws_subnet" "puppet_nodes" {
 }
 
 resource "aws_instance" "puppet_master" {
-  ami                         = "ami-0440d3b780d96b29d"
+  ami                         = "ami-07d9b9ddc6cd8dd30"
   instance_type               = "t2.medium"
   subnet_id                   = data.aws_subnet.puppet_nodes.id
   vpc_security_group_ids      = [aws_security_group.puppet_security_group.id]
@@ -28,7 +28,7 @@ resource "aws_instance" "puppet_master" {
 
 resource "aws_instance" "puppet_agents" {
   count                       = 2
-  ami                         = "ami-0440d3b780d96b29d"
+  ami                         = "ami-07d9b9ddc6cd8dd30"
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.puppet_nodes.id
   vpc_security_group_ids      = [aws_security_group.puppet_security_group.id]
@@ -40,7 +40,6 @@ resource "aws_instance" "puppet_agents" {
     Project = "puppet"
   }
 }
-
 
 resource "aws_security_group" "puppet_security_group" {
   name        = "puppet nodes sg"
@@ -74,6 +73,14 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_icmp" {
+  security_group_id = aws_security_group.puppet_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = -1
+  ip_protocol       = "icmp"
+  to_port           = -1
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_response" {
